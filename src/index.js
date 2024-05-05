@@ -154,6 +154,7 @@ app.post('/rooms/:roomId/messages', (req, res) => {
     res.sendStatus(204);
 });
 
+
 // Receber mensagens de uma sala de chat
 app.get('/rooms/:roomId/messages', (req, res) => {
     const { roomId } = req.params;
