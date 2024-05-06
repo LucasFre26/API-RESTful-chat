@@ -52,11 +52,25 @@ app.get('/users/:userId', (req, res) => {
 // Criar uma nova sala de chat
 app.post('/rooms', (req, res) => {
     const { name } = req.body;
+
+    // Verifica se o nome da sala é fornecido
     if (!name) {
         return res.status(400).json({ erro: 'Nome da sala é obrigatório' });
     }
-    const roomId = Math.floor(Math.random() * 1000).toString(); // Simples geração de roomId
+
+    // Verifica se o nome da sala já existe
+    const existingRoom = rooms.find(room => room.name === name);
+    if (existingRoom) {
+        return res.status(400).json({ erro: 'Nome da sala já está em uso' });
+    }
+
+    // Gera um novo roomId
+    const roomId = Math.floor(Math.random() * 1000).toString();
+
+    // Cria a nova sala
     rooms.push({ roomId, name, users: [] });
+
+    // Retorna o ID da nova sala
     res.status(201).json({ roomId });
 });
 
@@ -115,13 +129,31 @@ app.post('/rooms/:roomId/leave', (req, res) => {
 // Remover um usuário de uma sala específica
 app.delete('/rooms/:roomId/users/:userId', (req, res) => {
     const { roomId, userId } = req.params;
+
+    // Verifica se a sala existe
     const room = rooms.find(room => room.roomId === roomId);
     if (!room) {
         return res.status(404).json({ erro: 'Sala não encontrada' });
     }
+
+    // Verifica se o usuário existe
+    const user = users.find(user => user.userId === userId);
+    if (!user) {
+        return res.status(404).json({ erro: 'Usuário não encontrado' });
+    }
+
+    // Verifica se o usuário está na sala especificada
+    if (!room.users.includes(userId)) {
+        return res.status(404).json({ erro: 'Usuário não está na sala especificada' });
+    }
+
+    // Remove o usuário da sala
     room.users = room.users.filter(user => user !== userId);
+
+    // Retorna uma resposta de sucesso
     res.status(200).json({ success: `Usuário ${userId} foi removido da sala ${roomId} com sucesso` });
 });
+
 
 // Lista todas as salas ativas na secao
 app.get('/rooms/active', (req, res) => {
