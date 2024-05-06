@@ -1,0 +1,110 @@
+{
+	"info": {
+		"_postman_id": "18e5fc01-3164-4800-9b5f-f7966acd866f",
+		"name": "API Redes I - Gerenciamento de Mensagens",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34407701"
+	},
+	"item": [
+		{
+			"name": "Enviar uma mensagem a uma sala",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userId\": \"301\",\r\n    \"message\": \"Olá, como vocês estão?\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/rooms/:roomId/messages",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"rooms",
+						":roomId",
+						"messages"
+					],
+					"variable": [
+						{
+							"key": "roomId",
+							"value": "524"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Receber mensagem de uma sala",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Enviar mensagem direta a outro usuario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"recipientId\" : \"964\",\r\n    \"senderId\" : \"812\",\r\n    \"message\" : \"Ola mundo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/messages/direct",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"messages",
+						"direct"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Obter messagens direta de um usuario",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/messages/direct/:userId",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"messages",
+						"direct",
+						":userId"
+					],
+					"variable": [
+						{
+							"key": "userId",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
