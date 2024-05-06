@@ -8,10 +8,10 @@ const PORT = 3000;
 // Middleware para processar payloads JSON
 app.use(bodyParser.json());
 
-// Simulação de banco de dados
 let users = [];
 let rooms = [];
 let messages = {};
+let directMessages = {};
 
 // Rotas para gerenciamento de usuários
 // Registrar um novo usuário
@@ -154,12 +154,60 @@ app.post('/rooms/:roomId/messages', (req, res) => {
     res.sendStatus(204);
 });
 
-
 // Receber mensagens de uma sala de chat
 app.get('/rooms/:roomId/messages', (req, res) => {
     const { roomId } = req.params;
     const roomMessages = messages[roomId] || [];
     res.json(roomMessages);
+});
+
+app.post('/messages/direct', (req, res) => {
+    const { recipientId, senderId, message } = req.body;
+
+    // Verifica se o conteúdo da mensagem está presente
+    if (!message) {
+        return res.status(400).json({ erro: 'Conteúdo da mensagem é obrigatório' });
+    }
+
+    // Verifica se o usuário de destino (receptor) existe
+    const recipientUser = users.find(user => user.userId === recipientId);
+    if (!recipientUser) {
+        return res.status(404).json({ erro: 'Usuário destinatário não encontrado' });
+    }
+
+    // Verifica se o usuário remetente existe
+    const senderUser = users.find(user => user.userId === senderId);
+    if (!senderUser) {
+        return res.status(404).json({ erro: 'Usuário remetente não encontrado' });
+    }
+
+    // Verifica se já existe uma lista de mensagens diretas para o destinatário
+    if (!directMessages[recipientId]) {
+        directMessages[recipientId] = [];
+    }
+
+    // Adiciona a mensagem à lista de mensagens diretas do destinatário
+    directMessages[recipientId].push({ senderId, message });
+
+    // Retorna uma resposta de sucesso
+    res.status(200).json({ success: 'Mensagem direta enviada com sucesso' });
+});
+
+// Rota para obter as mensagens diretas de um usuário específico
+app.get('/messages/direct/:userId', (req, res) => {
+    const { userId } = req.params;
+
+    // Verifica se o usuário existe
+    const user = users.find(user => user.userId === userId);
+    if (!user) {
+        return res.status(404).json({ erro: 'Usuário não encontrado' });
+    }
+
+    // Verifica se há mensagens diretas para o usuário
+    const userDirectMessages = directMessages[userId] || [];
+    
+    // Retorna as mensagens diretas do usuário
+    res.status(200).json(userDirectMessages);
 });
 
 // Inicia o servidor
