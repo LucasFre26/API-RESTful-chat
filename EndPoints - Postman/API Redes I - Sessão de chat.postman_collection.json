@@ -70,7 +70,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userId\" : \"252\"\r\n}",
+					"raw": "{\r\n    \"userId\" : \"214\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -92,7 +92,7 @@
 					"variable": [
 						{
 							"key": "roomId",
-							"value": "235"
+							"value": "773"
 						}
 					]
 				}
@@ -106,7 +106,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userId\" : \"252\"\r\n}",
+					"raw": "{\r\n    \"userId\" : \"214\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -128,7 +128,7 @@
 					"variable": [
 						{
 							"key": "roomId",
-							"value": "235"
+							"value": "774"
 						}
 					]
 				}
@@ -171,7 +171,19 @@
 			"name": "Salas ativas",
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/rooms/active",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"rooms",
+						"active"
+					]
+				}
 			},
 			"response": []
 		}
